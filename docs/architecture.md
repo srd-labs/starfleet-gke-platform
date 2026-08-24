@@ -259,8 +259,8 @@ BigQuery will also be used directly to demonstrate log-analysis queries.
 
 ### Next
 
-- [ ] GKE architecture and cost analysis
-- [ ] Alpha Quadrant GKE cluster
+- [x] GKE architecture and cost analysis
+- [x] Alpha Quadrant GKE cluster
 - [ ] Delta Quadrant GKE cluster
 - [ ] Application deployment
 - [ ] Load balancing / ingress
@@ -271,4 +271,22 @@ BigQuery will also be used directly to demonstrate log-analysis queries.
 - [ ] Troubleshooting scenario
 - [ ] Final architecture diagram
 - [ ] Assessment documentation
+
+### Alpha Quadrant Cluster
+
+**Status:** Deployed
+
+- Cluster: `enterprise-gke-alpha`
+- Type: GKE Standard
+- Topology: Zonal
+- Zone: `us-central1-a`
+- Node pool: `alpha-node-pool`
+- Node count: 1
+- Machine type: `e2-medium`
+- Boot disk: 30 GB `pd-balanced`
+- Networking: VPC-native
+- Node subnet: `10.10.0.0/24`
+- Pod range: `10.20.0.0/16`
+- Service range: `10.30.0.0/20`
+
 
