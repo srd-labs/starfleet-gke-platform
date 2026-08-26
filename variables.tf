@@ -8,3 +8,19 @@ variable "region" {
   type        = string
   default     = "us-central1"
 }
+
+
+
+
+# This is for reducing cost
+variable "alpha_node_count" {
+  description = "Number of worker nodes in Alpha"
+  type        = number
+  default     = 2
+}
+
+variable "delta_node_count" {
+  description = "Number of worker nodes in Delta"
+  type        = number
+  default     = 2
+}

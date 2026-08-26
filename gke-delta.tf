@@ -34,7 +34,7 @@ resource "google_container_node_pool" "delta_nodes" {
   name       = "delta-node-pool"
   location   = "us-east1-b"
   cluster    = google_container_cluster.delta.name
-  node_count = 2
+  node_count = var.delta_node_count
 
   node_config {
     machine_type = "e2-medium"
