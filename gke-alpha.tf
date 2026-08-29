@@ -43,7 +43,7 @@ resource "google_container_node_pool" "alpha_nodes" {
 
   # One worker node is sufficient for the lab.
   # Production environments would normally use multiple nodes.
-  node_count =  var.alpha_node_count
+  node_count = var.alpha_node_count
 
   node_config {
     # Cost-conscious machine size for the lab.
