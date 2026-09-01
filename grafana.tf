@@ -115,8 +115,13 @@ resource "google_compute_firewall" "grafana_ssh" {
 # -----------------------------------------------------------------------------
 resource "google_compute_instance" "grafana" {
   name         = "starfleet-grafana"
-  machine_type = "e2-micro"
+  machine_type = "e2-small"
   zone         = "us-central1-a"
+
+  # Some Compute Engine changes, including machine type updates,
+  # require the VM to be stopped temporarily. Terraform will stop
+  # and restart the instance automatically when this is enabled.
+  allow_stopping_for_update = true
 
   tags = ["starfleet-grafana"]
 

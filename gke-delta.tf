@@ -4,6 +4,18 @@ resource "google_container_cluster" "delta" {
   name     = "enterprise-gke-delta"
   location = "us-east1-b"
 
+  # Enable Workload Identity so Kubernetes workloads can securely access
+  # Google Cloud services without storing service account key files.
+  workload_identity_config {
+    workload_pool = "${var.project_id}.svc.id.goog"
+  }
+
+  # Enable the GKE Secret Manager add-on so workloads can mount secrets
+  # directly from Google Secret Manager as files inside application pods.
+  secret_manager_config {
+    enabled = true
+  }
+
   # Attach Delta to the Starfleet VPC and Delta regional subnet.
   network    = google_compute_network.starfleet_vpc.id
   subnetwork = google_compute_subnetwork.delta_quadrant.id
