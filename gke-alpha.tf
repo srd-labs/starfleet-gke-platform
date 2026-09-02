@@ -36,6 +36,12 @@ resource "google_container_cluster" "alpha" {
     services_secondary_range_name = "alpha-services"
   }
 
+  # Enforce the project Binary Authorization policy for workloads
+  # deployed to the Alpha GKE cluster.
+  binary_authorization {
+    evaluation_mode = "PROJECT_SINGLETON_POLICY_ENFORCE"
+  }
+
   # Lab setting. Allows Terraform to destroy the cluster
   # when we're finished to avoid unnecessary GCP charges.
   deletion_protection = false

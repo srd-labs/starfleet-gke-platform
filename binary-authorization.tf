@@ -134,3 +134,40 @@ resource "google_project_iam_member" "github_actions_occurrences_editor" {
   member  = "serviceAccount:${google_service_account.github_actions.email}"
 }
 
+# Allow GitHub Actions to inspect existing attestations attached
+# to the trusted Container Analysis note. This makes the CI/CD
+# attestation step idempotent when a workflow is rerun.
+resource "google_container_analysis_note_iam_member" "github_actions_note_viewer" {
+  project = var.project_id
+  note    = google_container_analysis_note.starfleet_attestation.name
+  role    = "roles/containeranalysis.notes.viewer"
+  member  = "serviceAccount:${google_service_account.github_actions.email}"
+}
+
+# Define the project-level Binary Authorization policy.
+# Alpha requires container images to have a valid attestation from
+# the trusted Starfleet image attestor before deployment.
+resource "google_binary_authorization_policy" "starfleet" {
+  project = var.project_id
+
+  # Allow Google-maintained GKE system images to be evaluated by
+  # Google's managed system policy so required cluster components
+  # are not blocked by our application attestation policy.
+  global_policy_evaluation_mode = "ENABLE"
+
+  # Keep the project default permissive because Binary Authorization
+  # enforcement is initially being introduced only to Alpha.
+  default_admission_rule {
+    evaluation_mode  = "ALWAYS_ALLOW"
+    enforcement_mode = "ENFORCED_BLOCK_AND_AUDIT_LOG"
+  }
+
+  # Require a valid Starfleet attestation for application images
+  # deployed to the Alpha GKE cluster.
+  cluster_admission_rules {
+    cluster                 = "us-central1-a.enterprise-gke-alpha"
+    evaluation_mode         = "REQUIRE_ATTESTATION"
+    enforcement_mode        = "ENFORCED_BLOCK_AND_AUDIT_LOG"
+    require_attestations_by = [google_binary_authorization_attestor.starfleet_attestor.name]
+  }
+}
