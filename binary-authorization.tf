@@ -144,6 +144,17 @@ resource "google_container_analysis_note_iam_member" "github_actions_note_viewer
   member  = "serviceAccount:${google_service_account.github_actions.email}"
 }
 
+# Allow GitHub Actions to inspect occurrences attached to the
+# Binary Authorization attestation note. This lets the pipeline
+# detect whether an image digest has already been attested.
+resource "google_container_analysis_note_iam_member" "github_actions_attestation_viewer" {
+  project = var.project_id
+  note    = google_container_analysis_note.starfleet_attestation.name
+  role    = "roles/containeranalysis.notes.occurrences.viewer"
+  member  = "serviceAccount:${google_service_account.github_actions.email}"
+}
+
+
 # Define the project-level Binary Authorization policy.
 # Alpha requires container images to have a valid attestation from
 # the trusted Starfleet image attestor before deployment.
