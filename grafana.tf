@@ -230,6 +230,19 @@ output "grafana_external_ip" {
   value       = google_compute_instance.grafana.network_interface[0].access_config[0].nat_ip
 }
 
+# Allows the Grafana service account to run BigQuery query jobs.
+resource "google_project_iam_member" "grafana_bigquery_job_user" {
+  project = var.project_id
+  role    = "roles/bigquery.jobUser"
+  member  = "serviceAccount:${google_service_account.grafana.email}"
+}
+
+# Allows the Grafana service account to read BigQuery data.
+resource "google_project_iam_member" "grafana_bigquery_data_viewer" {
+  project = var.project_id
+  role    = "roles/bigquery.dataViewer"
+  member  = "serviceAccount:${google_service_account.grafana.email}"
+}
 
 # -----------------------------------------------------------------------------
 # Grafana URL Output

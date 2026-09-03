@@ -5,8 +5,8 @@
     "name": "adk8hd6",
     "namespace": "default",
     "uid": "f437cb88-09a2-4a9c-ba92-9d8f1f785234",
-    "resourceVersion": "1788121193386982",
-    "generation": 20,
+    "resourceVersion": "1788465440914012",
+    "generation": 40,
     "creationTimestamp": "2026-08-30T19:15:30Z",
     "labels": {
       "grafana.app/deprecatedInternalID": "4471753809809408"
@@ -15,7 +15,7 @@
       "grafana.app/createdBy": "user:cfwpdanhdqolcc",
       "grafana.app/saved-from-ui": "Grafana v13.2.0 (f681b1359f)",
       "grafana.app/updatedBy": "user:cfwpdanhdqolcc",
-      "grafana.app/updatedTimestamp": "2026-08-30T20:19:53Z"
+      "grafana.app/updatedTimestamp": "2026-09-03T19:57:20Z"
     }
   },
   "spec": {
@@ -669,7 +669,7 @@
             "spec": {
               "options": {
                 "colorMode": "value",
-                "graphMode": "none",
+                "graphMode": "area",
                 "justifyMode": "auto",
                 "orientation": "horizontal",
                 "percentChangeColorMode": "standard",
@@ -785,7 +785,7 @@
             "spec": {
               "options": {
                 "colorMode": "value",
-                "graphMode": "none",
+                "graphMode": "area",
                 "justifyMode": "auto",
                 "orientation": "horizontal",
                 "percentChangeColorMode": "standard",
@@ -819,6 +819,257 @@
                   "color": {
                     "mode": "thresholds",
                     "fixedColor": "#ad46ff"
+                  }
+                },
+                "overrides": []
+              }
+            }
+          }
+        }
+      },
+      "panel-7": {
+        "kind": "Panel",
+        "spec": {
+          "id": 7,
+          "title": "Application Error Rate Over Time",
+          "description": "",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "grafana-bigquery-datasource",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "afx61mcw7rvnkd"
+                      },
+                      "spec": {
+                        "dataset": "starfleet_gke_logs",
+                        "editorMode": "code",
+                        "format": 1,
+                        "location": "",
+                        "project": "starfleet-gke-platform-lab",
+                        "rawQuery": true,
+                        "rawSql": "WITH requests AS (\n  SELECT\n    timestamp,\n    SAFE_CAST(\n      REGEXP_EXTRACT(\n        textPayload,\n        r'HTTP/[0-9.]+\" ([0-9]{3})'\n      ) AS INT64\n    ) AS status_code\n  FROM `starfleet-gke-platform-lab.starfleet_gke_logs.stderr`\n  WHERE $__timeFilter(timestamp)\n    AND textPayload LIKE '%werkzeug%'\n)\n\nSELECT\n  TIMESTAMP_TRUNC(timestamp, MINUTE) AS time,\n  ROUND(\n    SAFE_DIVIDE(\n      COUNTIF(status_code >= 500),\n      COUNTIF(status_code IS NOT NULL)\n    ) * 100, 4\n  ) AS error_rate_percent\nFROM requests\nGROUP BY time\nORDER BY time",
+                        "sql": {
+                          "columns": [
+                            {
+                              "parameters": [],
+                              "type": "function"
+                            }
+                          ],
+                          "groupBy": [
+                            {
+                              "property": {
+                                "type": "string"
+                              },
+                              "type": "groupBy"
+                            }
+                          ],
+                          "limit": 50
+                        }
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "timeseries",
+            "version": "13.2.0",
+            "spec": {
+              "options": {
+                "legend": {
+                  "calcs": [],
+                  "displayMode": "list",
+                  "placement": "bottom",
+                  "showLegend": true
+                },
+                "tooltip": {
+                  "hideZeros": false,
+                  "mode": "single",
+                  "sort": "none"
+                }
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "percent",
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": 0,
+                        "color": "green"
+                      },
+                      {
+                        "value": 80,
+                        "color": "red"
+                      }
+                    ]
+                  },
+                  "color": {
+                    "mode": "palette-classic"
+                  },
+                  "custom": {
+                    "axisBorderShow": false,
+                    "axisCenteredZero": false,
+                    "axisColorMode": "text",
+                    "axisLabel": "",
+                    "axisPlacement": "auto",
+                    "barAlignment": 0,
+                    "barWidthFactor": 0.6,
+                    "drawStyle": "line",
+                    "fillOpacity": 0,
+                    "gradientMode": "none",
+                    "hideFrom": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": false
+                    },
+                    "insertNulls": false,
+                    "lineInterpolation": "linear",
+                    "lineWidth": 1,
+                    "pointSize": 5,
+                    "scaleDistribution": {
+                      "type": "linear"
+                    },
+                    "showPoints": "auto",
+                    "showValues": false,
+                    "spanNulls": false,
+                    "stacking": {
+                      "group": "A",
+                      "mode": "none"
+                    },
+                    "thresholdsStyle": {
+                      "mode": "off"
+                    }
+                  }
+                },
+                "overrides": [
+                  {
+                    "__systemRef": "hideSeriesFrom",
+                    "matcher": {
+                      "id": "byNames",
+                      "options": {
+                        "mode": "exclude",
+                        "names": [
+                          "error_rate_percent"
+                        ],
+                        "prefix": "All except:",
+                        "readOnly": true
+                      }
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.hideFrom",
+                        "value": {
+                          "legend": false,
+                          "tooltip": true,
+                          "viz": true
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "panel-8": {
+        "kind": "Panel",
+        "spec": {
+          "id": 8,
+          "title": "Pod Restart Counts by Namespace",
+          "description": "",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "stackdriver",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "P53B7819E0F26D6F4"
+                      },
+                      "spec": {
+                        "promQLQuery": {
+                          "expr": "sum by (namespace_name, container_name) (\n  increase(\n    kubernetes_io:container_restart_count{\n      monitored_resource=\"k8s_container\",\n      container_name=~\"navigation-service|communications-service\"\n    }[5m]\n  )\n)",
+                          "projectName": "starfleet-gke-platform-lab",
+                          "step": "10s"
+                        },
+                        "queryType": "promQL",
+                        "timeSeriesList": {
+                          "filters": [],
+                          "projectName": "starfleet-gke-platform-lab",
+                          "view": "FULL"
+                        }
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "stat",
+            "version": "13.2.0",
+            "spec": {
+              "options": {
+                "colorMode": "value",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "percentChangeColorMode": "standard",
+                "reduceOptions": {
+                  "calcs": [
+                    "lastNotNull"
+                  ],
+                  "fields": "",
+                  "values": false
+                },
+                "showPercentChange": false,
+                "textMode": "auto",
+                "wideLayout": true
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": 0,
+                        "color": "green"
+                      },
+                      {
+                        "value": 80,
+                        "color": "red"
+                      }
+                    ]
+                  },
+                  "color": {
+                    "mode": "thresholds"
                   }
                 },
                 "overrides": []
@@ -890,7 +1141,7 @@
               "x": 0,
               "y": 16,
               "width": 11,
-              "height": 8,
+              "height": 6,
               "element": {
                 "kind": "ElementReference",
                 "name": "panel-5"
@@ -903,10 +1154,36 @@
               "x": 11,
               "y": 16,
               "width": 11,
-              "height": 8,
+              "height": 6,
               "element": {
                 "kind": "ElementReference",
                 "name": "panel-6"
+              }
+            }
+          },
+          {
+            "kind": "GridLayoutItem",
+            "spec": {
+              "x": 0,
+              "y": 22,
+              "width": 11,
+              "height": 7,
+              "element": {
+                "kind": "ElementReference",
+                "name": "panel-7"
+              }
+            }
+          },
+          {
+            "kind": "GridLayoutItem",
+            "spec": {
+              "x": 11,
+              "y": 22,
+              "width": 11,
+              "height": 7,
+              "element": {
+                "kind": "ElementReference",
+                "name": "panel-8"
               }
             }
           }
