@@ -1,4 +1,4 @@
-# Starfleet GKE Platform --- What We Covered
+# Starfleet GKE Platform --- What is Covered
 
 ## 1. Project Overview
 
