@@ -6,31 +6,51 @@ operating the Starfleet GKE Platform Lab.
 Each document records the symptom, investigation, root cause,
 resolution, validation, and lessons learned.
 
-  --------------------------------------------------------------------------------------
-  Issue                                              Area
-  -------------------------------------------------- -----------------------------------
-  [Kubectl Authentication                            GKE / kubectl
-  Failed](kubectl-authentication-failed.md)          
+  ---------------------------------------------------------------------------------------
+  Issue                                               Area
+  --------------------------------------------------- -----------------------------------
+  [Kubectl Authentication                             GKE / kubectl
+  Failed](kubectl-authentication-failed.md)           
 
-  [Container Architecture                            Docker / GKE
-  Mismatch](container-architecture-mismatch.md)      
+  [Container Architecture                             Docker / GKE
+  Mismatch](container-architecture-mismatch.md)       
 
-  [Insufficient CPU / Pending                        GKE / Kubernetes
-  Pods](insufficient-cpu-pending-pods.md)            
+  [Insufficient CPU / Pending                         GKE / Kubernetes
+  Pods](insufficient-cpu-pending-pods.md)             
 
-  [Topology Spread                                   Kubernetes
-  Configuration](topology-spread-configuration.md)   
+  [Topology Spread                                    Kubernetes
+  Configuration](topology-spread-configuration.md)    
 
-  [Communications Selector                           Kubernetes
-  Error](communications-selector-error.md)           
+  [Communications Selector                            Kubernetes
+  Error](communications-selector-error.md)            
 
-  [Cloud Monitoring CLI                              Cloud Monitoring
-  Command](cloud-monitoring-cli.md)                  
+  [Cloud Monitoring CLI                               Cloud Monitoring
+  Command](cloud-monitoring-cli.md)                   
 
-  [Grafana SSH Firewall](grafana-ssh-firewall.md)    Compute Engine / Networking
+  [Grafana SSH Firewall](grafana-ssh-firewall.md)     Compute Engine / Networking
 
-  [Grafana VM Resize](grafana-vm-resize.md)          Compute Engine / Grafana
-  --------------------------------------------------------------------------------------
+  [Grafana VM Resize](grafana-vm-resize.md)           Compute Engine / Grafana
 
-> `grafana-vm-resize.md` already exists in the repository and is
-> therefore not duplicated in this package.
+  [Delta Zone Resource Pool                           GKE / Compute Engine
+  Exhausted](delta-zone-resource-pool-exhausted.md)   
+
+  [Deployment Last-Applied vs Live                    Kubernetes
+  Spec](deployment-last-applied-vs-live-spec.md)      
+
+  [Gateway API Configuration                          GKE / Gateway API
+  Verification](gateway-api-config-verification.md)   
+
+  [Fleet CLI Feature                                  GKE Fleet
+  Verification](fleet-cli-feature-verification.md)    
+
+  [Terraform Duplicate Resource                       Terraform / GCP APIs
+  Declaration](terraform-duplicate-resource.md)       
+  ---------------------------------------------------------------------------------------
+
+The successful Multi-Cluster Gateway failover and failback test is
+documented separately as platform validation rather than as a
+troubleshooting incident:
+
+``` text
+../multi-cluster-gateway-failover-validation.md
+```

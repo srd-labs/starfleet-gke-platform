@@ -16,7 +16,7 @@ variable "region" {
 variable "alpha_node_count" {
   description = "Number of worker nodes in Alpha"
   type        = number
-  default     = 2
+  default     = 3
 }
 
 variable "delta_node_count" {

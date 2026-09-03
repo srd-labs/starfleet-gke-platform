@@ -4,6 +4,12 @@ resource "google_container_cluster" "delta" {
   name     = "enterprise-gke-delta"
   location = "us-east1-b"
 
+  # Enables the Kubernetes Gateway API standard channel.
+  # Delta will participate as a backend cluster in the
+  # multi-cluster global application entry point.
+  gateway_api_config {
+    channel = "CHANNEL_STANDARD"
+  }
   # Enable Workload Identity so Kubernetes workloads can securely access
   # Google Cloud services without storing service account key files.
   workload_identity_config {
@@ -69,3 +75,4 @@ resource "google_container_node_pool" "delta_nodes" {
     }
   }
 }
+

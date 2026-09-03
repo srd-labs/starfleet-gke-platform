@@ -732,3 +732,17 @@ kubectl config current-context
 ```
 
 This prevents accidentally deploying an Alpha workload to Delta or a Delta workload to Alpha.
+
+
+### Verify Multi-cluster Gateway prerequisite APIs
+
+```bash
+gcloud services list \
+  --enabled \
+  --project=starfleet-gke-platform-lab \
+  --filter="NAME:(gkehub.googleapis.com OR multiclusterservicediscovery.googleapis.com OR multiclusteringress.googleapis.com OR trafficdirector.googleapis.com OR dns.googleapis.com OR cloudresourcemanager.googleapis.com)"
+```
+
+
+
+

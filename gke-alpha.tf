@@ -4,6 +4,13 @@ resource "google_container_cluster" "alpha" {
   name     = "enterprise-gke-alpha"
   location = "us-central1-a"
 
+  # Enables the Kubernetes Gateway API standard channel.
+  # This installs the standard Gateway API CRDs and allows the
+  # cluster to participate in GKE Gateway-based load balancing.
+  gateway_api_config {
+    channel = "CHANNEL_STANDARD"
+  }
+
   # Enable Workload Identity so Kubernetes workloads can securely access
   # Google Cloud services without storing service account key files.
   workload_identity_config {
@@ -87,5 +94,3 @@ resource "google_container_node_pool" "alpha_nodes" {
     }
   }
 }
-
-
