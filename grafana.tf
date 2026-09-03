@@ -253,3 +253,4 @@ output "grafana_url" {
   description = "URL used to access the Starfleet Grafana instance"
   value       = "http://${google_compute_instance.grafana.network_interface[0].access_config[0].nat_ip}:3000"
 }
+
